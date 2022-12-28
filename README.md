@@ -600,7 +600,11 @@ The reaction inside the unused ISRs depends on the "correct" response to an unex
 
 - You name it...
 
-**Note:** as interrupt bugs are generally difficult to find, it is often helpful to set breakpoints inside unhandled ISR functions during the development phase.  
+**Notes:** 
+
+- As interrupt bugs are generally difficult to find, it is often helpful to set breakpoints inside unhandled ISR functions during the development phase.  
+
+- For the [SDCC](https://sdcc.sourceforge.net/) toolchain a special feature allows to simplify/automate the treatment of unused interrupts, see [here](https://github.com/gicking/STM8_Fault-Tolerant_SW/issues/1). However, this is toolchain specific and does not work e.g. for [Cosmic](https://cosmic-software.com/stm8.php) toolchain
 
 ----
 
