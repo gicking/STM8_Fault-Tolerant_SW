@@ -646,31 +646,31 @@ In a "normal", i.e. safety uncritical situation, I generally use a simple 16-bit
 
 The random access memory (RAM) is the volatile working memory of a µC. RAM is generally cleared by the flash start-up code after each power-on or reset. The functionality of RAM is crucial for a well-defined system behavior and should therefore be checked. However, as RAM content changes continuously (and fast) during run-time, it can only be checked immediately after reset, not during run-time. 
 
-The most common procedure for checking RAM functionality is as follows:
+There are several, established methods to test RAM functionality, e.g. "checkerboard test" or "march test". The below example demonstrates the checkerboard test, which is very common for checking embedded RAM. The procedure is as follows:
 
 - During flash start-up
    
-  - Fill complete RAM with a checkerboard pattern `0xA5`, and read back
+  - Fill complete RAM with a checkerboard pattern `0x55`, and read back
 
-  - Repeat procedure with inverted value `0x5A`
+  - Repeat procedure with inverted value `0xAA`
 
-- In case of a mismatch, an error response can be executed. Most often this is a [SW reset](#software-reset), but more sophisticated reactions are possible. But remember, a µC with broken RAM cannot be trusted
+- In case of a mismatch, an error response can be executed. Often this is a [SW reset](#software-reset), but more sophisticated reactions are also possible. But remember, a µC with broken RAM cannot be trusted!
 
 **Notes:**
 
 - More complex test patterns are described in Application Note [AN4435](https://www.st.com/content/ccc/resource/technical/document/application_note/ff/a7/a7/01/7c/9f/43/d4/DM00105610.pdf/files/DM00105610.pdf/jcr:content/translations/en.DM00105610.pdf)
   
-- As the stack is reserved before jumping to `main()`, the RAM should be checked during [start-up](#software-reset)   
+- As the stack is reserved before jumping to `main()`, the RAM has to be checked during flash start-up
 
-- Complete RAM is overwritten by the test. Therefore only CPU and SFR registers may be used for the test. This level of control generally requires to write the RAM test in assmbler
+- Complete RAM is overwritten by the test. Therefore only CPU and SFR registers may be used for the test. This level of control generally requires to write the RAM test in assmbler (see example)
   
-- Implementation of flash start-up code is heavily dependent on the used toolchain
+- Implementation of flash start-up code is heavily dependent on the used toolchain. E.g. [SDCC](https://sdcc.sourceforge.net/) uses a [dedicated routine](http://www.gtoal.com/compilers101/small_c/gbdk/sdcc/doc/sdccman.html/node31.html) `__sdcc_external_startup()` for optional user start-up code, while Cosmic uses specific filenames for flash startup code.
 
-In a "normal", i.e. safety uncritical situation, I generally don't perform a RAM check. The STM8 is produced in a robust 180nm technology, which makes spontaneous RAM bit flips unlikely. 
+A fully functional RAM is crucial for any application. A (simple) test adds only small code and run-time overhead, and is independent of the rest of the application. Therefore I generally propose to add a RAM test, even though defect RAM cells are highly unlikely. 
 
 ----
 
-**Example:** TODO
+**Example:** [src/RAM_test](./src/RAM_test)
 
 [Back to Top](#table-of-content)
 
