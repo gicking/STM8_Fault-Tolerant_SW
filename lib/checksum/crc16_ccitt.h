@@ -1,12 +1,13 @@
 /**********************
-  declaration and macros for external clock (HSE) including supervision (CSS)
+  declaration and macros for CRC16 checksum calculation according to CCITT
+  Source: https://www.embeddedrelated.com/showcode/295.php
 **********************/
 
 /*-----------------------------------------------------------------------------
     MODULE DEFINITION FOR MULTIPLE INCLUSION
 -----------------------------------------------------------------------------*/
-#ifndef _HSE_CLOCK_H_
-#define _HSE_CLOCK_H_
+#ifndef _CRC16_CCITT_H_
+#define _CRC16_CCITT_H_
 
 
 /*-----------------------------------------------------------------------------
@@ -17,14 +18,26 @@
 
 
 /*-----------------------------------------------------------------------------
+    DECLARATION OF GLOBAL MACROS
+-----------------------------------------------------------------------------*/
+
+/// CRC16 CCITT polynom (X.25, V.41, HDLC FCS, Bluetooth,...)
+#define POLYNOME_CCITT        0x1021
+
+
+/*-----------------------------------------------------------------------------
     DECLARATION OF GLOBAL VARIABLES
 -----------------------------------------------------------------------------*/
 
 // declare or reference to global variables, depending on '_MAIN_'
 #if defined(_MAIN_)
-  volatile bool               error_CSS = FALSE;
+  volatile uint32_t           addr_Chk_Start = 0x00;
+  volatile uint32_t           addr_Chk_End   = 0x00;
+  volatile uint32_t           addr_Chk_Curr  = 0x00;
 #else // _MAIN_
-  extern volatile bool        error_CSS;
+  extern volatile uint32_t    addr_Chk_Start;
+  extern volatile uint32_t    addr_Chk_End;
+  extern volatile uint32_t    addr_Chk_Curr;
 #endif // _MAIN_
 
 
@@ -32,39 +45,22 @@
     DECLARATION OF GLOBAL FUNCTIONS
 -----------------------------------------------------------------------------*/
 
-/// @brief switch to external HSE clock and enable CSS
-ErrorStatus switch_HSE_clock(uint16_t timeout);
-
-
-/**
-  \fn void ISR_CSS_handler(void)
-   
-  \brief inline handler for CCS
-  
-  CCS handler. Is called from within actual CLK ISR in stm8s_it.c.
-  Inline implementation for minimal latency.
-*/
+/// @brief initialize CRC16 checksum
 #if defined(__CSMC__)
-  @inline void ISR_CSS_handler(void)
+  @inline uint16_t crc16_init(void)
 #else // SDCC & IAR
-  static inline void ISR_CSS_handler(void)
+  static inline uint16_t crc16_init(void)
 #endif
 {
-  // clear CSS interrupt flag
-  CLK_ClearITPendingBit(CLK_IT_CSSD);
+  return 0xFFFF;
+}
 
-  // disable CSS interrupt (HSE is disabled)
-  CLK_ITConfig(CLK_IT_CSSD, DISABLE);
 
-  // set HSI clock to 16MHz (default is 2MHz) 
-  CLK->CKDIVR = 0x00;
+/// @brief update CRC16 checksum with next byte
+uint16_t crc16_update(uint16_t crcValue, uint8_t newByte);
 
-  // set CSS error flag
-  error_CSS = TRUE;
-
-} // ISR_CSS_handler
 
 /*-----------------------------------------------------------------------------
     END OF MODULE DEFINITION FOR MULTIPLE INLUSION
 -----------------------------------------------------------------------------*/
-#endif // _HSE_CLOCK_H_
+#endif // _CRC16_CCITT_H_
