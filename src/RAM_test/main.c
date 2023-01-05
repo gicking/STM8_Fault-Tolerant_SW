@@ -52,29 +52,28 @@
 
 uint8_t __sdcc_external_startup(void)
 {
+  // Note: checkerboard test takes ~55ms and march-c test ~130ms (both for 6kB)
+
   // If IWDG is started via option byte, it is started with typ. 16ms timeout.
-  // To avoid reset during RAM test, set longer IWDG timeout.
+  // To avoid reset during RAM test, set a longer IWDG timeout.
   // Can be omitted if IWDG is not started via option byte
   IWDG->KR  = 0xCC;     // start IWDG (not required if IWDG is activated via option bytes)
   IWDG->KR  = 0x55;     // unlock write access to protected registers
   IWDG->PR  = 0x04;     // set prescaler for 1kHz (=64kHz/2^(PR+2))
   IWDG->RLR = 0xFF;     // set max. timeout period (255ms @ 1kHz)
   IWDG->KR  = 0xAA;     // reload IWDG with new timeout 
-  
-  // If WWDG is started via option byte, it is started with 49ms timeout.
-  // To avoid reset during RAM test, set longer WWDG timeout.
-  // Can be omitted if WWDG is not started via option byte
-  WWDG->WR  = 0x7F;     // no closed window
-  WWDG->CR  = 0x7F;     // set max. timeout (393.6ms @ fCPU=2MHz)
-  WWDG->CR |= 0x80;     // start WWDG (not required if IWDG is activated via option bytes)
 
-	// These are actually macros that jump directly to the test routine. When
-	// that returns, this means it effectively does so directly from
-	// __sdcc_external_startup() itself. Anything below the test is never
-	// executed; the 'return' statement is just to avoid a compiler warning.
-	ram_test_march_c();
-	//ram_test_checkerboard();
-	
+  // If WWDG is started via option byte, it is started with 393.6ms timeout @ fCPU=2MHz.
+  // That is sufficient for both checkerboard and march-c tests, so no WWDG handling 
+  // is required here, just take into account the test duration for your initial WWDG service
+
+  // These are actually macros that jump directly to the test routine. When
+  // that returns, this means it effectively does so directly from
+  // __sdcc_external_startup() itself. Anything below the test is never
+  // executed; the 'return' statement is just to avoid a compiler warning.
+  //ram_test_checkerboard();
+  ram_test_march_c();
+
   // just to avoid compiler warning
   return 0;
 
