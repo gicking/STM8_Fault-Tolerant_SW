@@ -57,7 +57,7 @@ uint8_t __sdcc_external_startup(void)
   // If IWDG is started via option byte, it is started with typ. 16ms timeout.
   // To avoid reset during RAM test, set a longer IWDG timeout.
   // Can be omitted if IWDG is not started via option byte
-  IWDG->KR  = 0xCC;     // start IWDG (not required if IWDG is activated via option bytes)
+  //IWDG->KR  = 0xCC;     // start IWDG (not required if IWDG is activated via option bytes)
   IWDG->KR  = 0x55;     // unlock write access to protected registers
   IWDG->PR  = 0x04;     // set prescaler for 1kHz (=64kHz/2^(PR+2))
   IWDG->RLR = 0xFF;     // set max. timeout period (255ms @ 1kHz)
