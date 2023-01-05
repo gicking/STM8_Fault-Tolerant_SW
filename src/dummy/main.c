@@ -1,10 +1,20 @@
 /**********************
   
-  Dummy test project to try out things
-    
+  Demonstrate RAM check during flash startup
+
+  Functionality:
+    - during flash startup perform checkerboard RAM test (write 0x55/0xAA and read back)
+    - in case of failure
+      - perform ILLOP reset OR
+      - store information in bit 3 of SFR FLASH_CR
+    - blink LED with frequency depending on RAM test result 
+
   Supported Hardware:
     - Nucleo 8S207K8
   
+  Note:
+    - requires SDCC version >=4.2.10
+
 **********************/
 
 /*----------------------------------------------------------
@@ -14,13 +24,7 @@
 #include "stm8s_it.h"     // required here by SDCC for ISR
 #include "stm8s_clk.h"
 #include "stm8s_gpio.h"
-#include "stm8s_uart3.h"
-#include "stm8s_wwdg.h"
 #include "stdio.h"
-#define _MAIN_            // required for global variables
-  #include "sw_clock.h"
-  #include "uart_stdio.h"
-#undef _MAIN_
 
 
 /*----------------------------------------------------------
@@ -34,12 +38,6 @@
 #else
   #error Board not supported
 #endif
-
-// LED blink period [ms]
-#define LED_PERIOD      500
-
-// communication speed [Baud]
-#define BAUDRATE        115200L
 
 
 // see e.g. http://www.gtoal.com/compilers101/small_c/gbdk/sdcc/doc/sdccman.html/node31.html

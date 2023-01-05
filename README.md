@@ -63,7 +63,7 @@ This document focuses on features of the STM8S/AF µC. However, most techniques 
   - [Fill Unused Flash](#fill-unused-flash)
   - [Handle Unused Interrupts](#handle-unused-interrupts)
   - [Checksum over Static Flash](#checksum-over-static-flash)
-  - [RAM Check](#ram-check)
+  - [RAM Test](#ram-test)
   - [Refresh Peripheral Registers](#refresh-peripheral-registers)
   - [Conclusion](#conclusion)
 
@@ -313,6 +313,8 @@ The independent timeout watchdog (IWDG) of the STM8S/AF is described in the [ref
 
   - Optional activation by boot-ROM via [option bytes](#option-bytes), see e.g. [STM8S207K8 datasheet](https://www.st.com/resource/en/datasheet/stm8s207k8.pdf), section 8. Default timeout after reset is 16ms
 
+  - If IWDG is activated via option bytes and RAM test is used, special attention is required, see [RAM test](#ram-test) notes
+
 For a "normal" (i.e. not safety critical) software I generally configure the timeout period to 2x the longest main loop execution time. This covers the clock mismatch between CPU and LSI clocks, and still provides some buffer for timing deviations.
 
 The IWDG example demonstrates a slightly improved concept compared to the most simple one, described above (*service IWDG once per main loop*). Essentially it adds a small state machine, which ensures that IWDG is only serviced after each sub-routine has been executed exactly once. The remaining weak lines are the actual IWDG service at the end of the main loop, and the line where the final state value is set within *test_4()*.
@@ -340,7 +342,9 @@ The window watchdog (WWDG) of the STM8S/AF is described in the [reference manual
 
   - Timeout period and closed window and can be configured individually by SW between 768µs and 49.2ms @ 16MHz
 
-  - Optional activation by boot-ROM via [option bytes](#option-bytes), see e.g. [STM8S207K8 datasheet](https://www.st.com/resource/en/datasheet/stm8s207k8.pdf), section 8. Default after reset is 49.2ms timeout and no closed window
+  - Optional activation by boot-ROM via [option bytes](#option-bytes), see e.g. [STM8S207K8 datasheet](https://www.st.com/resource/en/datasheet/stm8s207k8.pdf), section 8. Default timeout after reset is 393.6ms @ 2MHz without closed window
+
+  - If WWDG is activated via option bytes and a RAM test is used which takes longer than 393ms, WWDG must be serviced within the RAM test, see [RAM test](#ram-test) notes
 
   - By setting the closed window to maximum, WWDG can be configured as a timeout watchdog. This is more convenient but less safe 
 
@@ -646,11 +650,11 @@ In a "normal", i.e. safety uncritical situation, I generally use a simple 16-bit
 ------------------------------------------------
 
 
-## RAM Check
+## RAM Test
 
-The random access memory (RAM) is the volatile working memory of a µC. RAM is generally cleared by the flash start-up code after each power-on or reset. The functionality of RAM is crucial for a well-defined system behavior and should therefore be checked. However, as RAM content changes continuously (and fast) during run-time, it can only be checked immediately after reset, not during run-time. 
+The random access memory (RAM) is the volatile working memory of a µC. RAM is generally cleared by the flash start-up code after each power-on or reset. The functionality of RAM is crucial for a well-defined system behavior and should therefore be checked. However, RAM content changes continuously (and fast) during run-time, so RAM can only be checked immediately after reset, not during run-time. 
 
-There are several, established methods to test RAM functionality, e.g. "checkerboard test" or "march test". The below example demonstrates the checkerboard test, which is very common for checking embedded RAM. The procedure is as follows:
+There are several, established methods to test RAM functionality, e.g. "checkerboard test" or "march test". The below example demonstrates the checkerboard test, which is often used for embedded RAM. The procedure is as follows:
 
 - During flash start-up
    
@@ -670,7 +674,11 @@ There are several, established methods to test RAM functionality, e.g. "checkerb
   
 - Implementation of flash start-up code is heavily dependent on the used toolchain. E.g. [SDCC](https://sdcc.sourceforge.net/) uses a [dedicated routine](http://www.gtoal.com/compilers101/small_c/gbdk/sdcc/doc/sdccman.html/node31.html) `__sdcc_external_startup()` for optional user start-up code, while Cosmic uses specific filenames for flash startup code.
 
-A fully functional RAM is crucial for any application. A (simple) test adds only small code and run-time overhead, and is independent of the rest of the application. Therefore I generally propose to add a RAM test, even though defect RAM cells are highly unlikely. 
+- For SDCC >=v4.2.10 RAM checkerboard and march test implementations are available from https://github.com/basilhussain/stm8-ram-test (used in below example)
+
+- The [IWDG watchdog](#window-watchdog-wwdg) has a default timeout which is shorter than the RAM test duration. So, if IWDG is activated via option bytes, you have to set longer timeouts in `__sdcc_external_startup()` prior to starting the RAM test (see below example)
+
+A fully functional RAM is crucial for any application. The checkerboard test from the example adds only 32B flash and 55ms startup time overheads. So, unless flash size or startup time are super critical, I propose to add a RAM test to every application.
 
 ----
 
