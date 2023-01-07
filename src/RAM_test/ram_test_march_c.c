@@ -79,6 +79,11 @@ unsigned char ram_test_march_c_impl(void) __naked {
 		cpw x, #RAM_END
 		jrule 0003$
 
+		;;;;;;;;;;;;
+		; TEST ONLY: provoke RAM error -> permanent reset cycle!
+        ;;;;;;;;;;;;
+		;;;bset 0x0010, #7
+
 #ifndef MARCH_C_MINUS
 		ldw x, #RAM_END
 

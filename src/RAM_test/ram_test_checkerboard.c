@@ -59,7 +59,7 @@ unsigned char ram_test_checkerboard_impl(void) __naked {
 		;;;;;;;;;;;;
 		; TEST ONLY: provoke RAM error -> permanent reset cycle!
         ;;;;;;;;;;;;
-		;bset 0x0010, #7
+		;;;bset 0x0010, #7
 
 		ldw x, #RAM_END
 

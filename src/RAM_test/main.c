@@ -1,10 +1,10 @@
 /**********************
   
-  Demonstrate RAM checkerboard test during flash startup
+  Demonstrate RAM test during flash startup
 
   Functionality:
-    - during startup perform checkerboard RAM test
-    - handle IWDG and WWDG watchdogs (important if activated via option bytes)
+    - during startup perform RAM test (checkerboard or march-c)
+    - handle IWDG and WWDG watchdogs (important if WDs are activated via option bytes)
     - in case of
       - no RAM error blink LED periodically 
       - RAM error perform ILLOP reset
@@ -13,7 +13,7 @@
     - Nucleo 8S207K8
   
   Note:
-    - actual RAM test from https://github.com/basilhussain/stm8-ram-test. There also a March-C test is available
+    - actual RAM tests from https://github.com/basilhussain/stm8-ram-test
     - This implementation is SDCC specific. Other toolchains need adaptations
     - Requires SDCC version >=4.2.10, see https://sourceforge.net/p/sdcc/bugs/3520/ and https://sourceforge.net/p/sdcc/bugs/3533/#7b22
     - RAM size must be provided via project options, see file "platformio.ini"
@@ -71,8 +71,8 @@ uint8_t __sdcc_external_startup(void)
   // that returns, this means it effectively does so directly from
   // __sdcc_external_startup() itself. Anything below the test is never
   // executed; the 'return' statement is just to avoid a compiler warning.
-  //ram_test_checkerboard();
-  ram_test_march_c();
+  ram_test_checkerboard();
+  //ram_test_march_c();
 
   // just to avoid compiler warning
   return 0;

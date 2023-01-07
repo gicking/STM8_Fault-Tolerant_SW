@@ -556,7 +556,7 @@ Re-enabling the flash-BL via SW should require highly specific conditions like a
 
 ----
 
-**Example:** TODO
+**Example:** None
 
 [Back to Top](#table-of-content)
 
@@ -623,15 +623,19 @@ The reaction inside the unused ISRs depends on the "correct" response to an unex
 
 The static part of P-flash generally contains an optional custom bootloader, the actual application code and possibly some static parameters. The integrity of this memory is crucial for a well-defined system behavior and should therefore be checked. 
 
-The most common procedure for checking the integrity of static P-flash is as follows:
+A common procedure for checking the integrity of static P-flash is as follows:
 
-- During factory programming the application SW, optional flash bootloader and static parameters are programmed. In addition, a checksum is stored at a fixed address in flash
+- During factory programming the application SW, optional flash bootloader and static parameters are programmed. In addition, a checksum is stored at a fixed address in P-flash or EEPROM
 
-- The application software calculates the checksum over the corresponding address range and compares the result to the stored checksum
+- The application software calculates the checksum over the relevant flash range and compares the result to the stored checksum
 
 - In case of a mismatch, an error response can be executed. This may be a reset, reduced functionality and/or an information to the superior control unit. As always, the "correct" error reaction depends on the respective application
 
-In a "normal", i.e. safety uncritical situation, I generally use a simple 16-bit XOR checksum over the static P-flash. Together with the [flash-ECC](#flash-protection) that should cover most error cases. However, for a more sophisticated CRC checksum implementation for STM8 see e.g. [here](https://github.com/basilhussain/stm8-crc).
+Many different algorithms exist to check the content of a data stream or storage. These range from a simple [sum](https://www.st.com/content/ccc/resource/technical/document/application_note/00/8c/aa/a4/3f/e3/40/cc/CD00004055.pdf/files/CD00004055.pdf/jcr:content/translations/en.CD00004055.pdf) or [XOR checksum](https://stackoverflow.com/a/61917868) to a full-blown [cyclic redundancy check (CRC)](https://commandlinefanatic.com/cgi-bin/showarticle.cgi?article=art008). And as always you have to find a compromise between protection level, code size and CPU runtime.
+
+While sum and XOR checksums are small and fast, they are insenitive to swapped data, e.g. the same bit flipped at 2 different addresses. On the other hand a CRC checksum is much more sensitive to errors, but in general has a bigger impact on CPU runtime and code size. 
+
+For a "normal", i.e. safety uncritical situation, I therefore prefer a [Fletcher-16](https://en.wikipedia.org/wiki/Fletcher%27s_checksum#Straightforward) checksum (see example). It is straightforward to implement and is more sensitive to swapped data. Together with the [flash-ECC](#flash-protection) it should cover most flash errors. 
 
 **Notes:**
 
@@ -641,9 +645,17 @@ In a "normal", i.e. safety uncritical situation, I generally use a simple 16-bit
   
 - Independent checksum calculation by the PC is generally achieved via post-build actions and depends on the used toolchain
 
+- An STM8 optimized implementations of various CRC checksums can be found [here](https://github.com/basilhussain/stm8-crc)
+
+- The (not optimized) Fletcher-16 implementation in [lib/checksum](./lib/checksum) with SDCC toolchain and f<sub>CPU</sub>=16MHz: 
+  
+  - takes ~330ms to calculate a checksum over 64kB flash
+  
+  - adds ~0.8% CPU load if `update_checksum_Fletcher16()` is called every 1ms. A new checksum is available every ~65.5s for 64kB flash  
+
 ----
 
-**Example:** TODO
+**Example:** [src/flash_checksum](./src/flash_checksum)
 
 [Back to Top](#table-of-content)
 
@@ -716,13 +728,13 @@ In a "normal", i.e. safety uncritical situation, I generally don't refresh SFRs 
 
 ## Conclusion 
 
-This text describes some basic techniques to develop fault-tolerant embedded software for the STM8 microcontroller. While most methods are specific, most are readily adaptable to other µCs. However, other chips offer other HW features, which have to be assessed carefully. Examples:
+This text describes some basic techniques to develop fault-tolerant embedded software for the STM8 microcontroller. While some methods are STM8 specific, most are readily adaptable to other µCs. However, other chips offer different HW features, which may offer additional or easier protection. Examples:
 
 - Multiple reset levels with different effects on SFRs
 
-- More ECC bits for 1-/2-bit error distinction with SW access to ECC result
+- More ECC bits for 1-/2-bit error distinction, and with SW access to ECC result
   
-- Fault collection unit (FCU) for 
+- Fault collection unit (FCU) in "proper" safety controllers
 
 - Watchdog with pre-warning interrupt for safe system shutdown
 
@@ -731,9 +743,5 @@ This text describes some basic techniques to develop fault-tolerant embedded sof
 Anyway, the take home message of this text should not be a step-by-step instruction for SW developers, but rather a call to leave the comfort zone of SW architectures and flowcharts and also consider possible system deviations and failures. 
 
 Now let's go and develop fault-tolerant embedded software! :thumbsup:
-
-----
-
-**Example:** TODO
 
 [Back to Top](#table-of-content)

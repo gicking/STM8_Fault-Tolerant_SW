@@ -1,37 +1,39 @@
 /**********************
   
-  Trigger SW reset via illegal opcode or WWDG watchdog 
+  Demonstrate flash checksum check
 
   Functionality:
-    - initialization:
-      - configure LED pin to output
-      - initialize SW clock
-      - configure UART @ 115.2kBaud / 8N1 
-      - print reset source via UART
-    - main loop
-      - blink LED periodically
-      - if UART receives
-        - 'r': trigger illegal opcode reset (ILLOP)
-        - 'R': trigger window watchdog reset (WWDG)
+    - during initialization calculate Fletcher-16 checksum over complete flash
+    - in main loop periodically 
+      - blink LED
+      - calculate checksum over complete flash in background
 
   Supported Hardware:
     - Nucleo 8S207K8
   
+  Note:
+    - here only print calculated checksum, no comparison with stored value in EEPROM
+    - checksum calculation is not size or speed optimized
+    - the initial checksum calculation takes ~330ms (16MHz, SDCC)
+    - when called every 1ms, a new checksum is available every ~65s with an additional CPU load of ~0.8% (16MHz, SDCC)
+
 **********************/
 
+/*----------------------------------------------------------
+    INCLUDE FILES
+----------------------------------------------------------*/
 /*----------------------------------------------------------
     INCLUDE FILES
 ----------------------------------------------------------*/
 #include "stm8s.h"
 #include "stm8s_it.h"     // required here by SDCC for ISR
 #include "stm8s_clk.h"
-#include "stm8s_uart3.h"
-#include "stm8s_rst.h"
+#include "stm8s_gpio.h"
 #include "stdio.h"
 #define _MAIN_            // required for global variables
   #include "sw_clock.h"
   #include "uart_stdio.h"
-  #include "sw_reset.h"
+  #include "checksum_fletcher-16.h"
 #undef _MAIN_
 
 
@@ -53,6 +55,10 @@
 // communication speed [Baud]
 #define BAUDRATE        115200L
 
+// start/end address for checksum check
+#define CHK_ADDR_START  0x8000    // flash start address
+#define CHK_ADDR_END    0x17FFF   // flash end address (64kB)
+
 
 /*----------------------------------------------------------
     GLOBAL FUNCTIONS
@@ -65,7 +71,11 @@ void main(void)
 {
   // for SW scheduler
   uint32_t  lastLED=0;
-  
+
+  // for checksum calculation
+  uint32_t  addrChk;
+  uint16_t  Chk;
+
 
   /////////////
   // initialization
@@ -95,21 +105,16 @@ void main(void)
   // enable interrupts
   enableInterrupts();
 
-  // print reset source
-  printf("\nreset source (0x%02x): ", (int) RST->SR);
-  if (!RST_GetFlagStatus(RST_FLAG_EMCF | RST_FLAG_SWIMF | RST_FLAG_ILLOPF | RST_FLAG_IWDGF | RST_FLAG_WWDGF))
-    printf("HW / BOR\n");
-  if (RST_GetFlagStatus(RST_FLAG_EMCF))
-    printf("EMC\n");
-  if (RST_GetFlagStatus(RST_FLAG_SWIMF))
-    printf("SWIM\n");
-  if (RST_GetFlagStatus(RST_FLAG_ILLOPF))
-    printf("ILLOP\n");
-  if (RST_GetFlagStatus(RST_FLAG_IWDGF))
-    printf("IWDG\n");
-  if (RST_GetFlagStatus(RST_FLAG_WWDGF))
-    printf("WWDG\n");
-  RST_ClearFlag(RST_FLAG_EMCF | RST_FLAG_SWIMF | RST_FLAG_ILLOPF | RST_FLAG_IWDGF | RST_FLAG_WWDGF);
+  // initial checksum calculation
+  uint32_t tStart = millis();
+  Chk = calculate_checksum_Fletcher16(CHK_ADDR_START, CHK_ADDR_END);
+  uint32_t tEnd = millis();
+  printf("initial: %ldms\t0x%04x\n", (long) (tEnd-tStart), Chk);
+
+  // re-initialize checksum calculation
+  addrChk = CHK_ADDR_START;
+  Chk = init_checksum_Fletcher16();
+  tStart = millis();
 
 
   /////////////
@@ -117,43 +122,46 @@ void main(void)
   /////////////
   while (1)
   {
-    // blink LED to indicate activity
-    if (millis() - lastLED > LED_PERIOD)
+    // check if 1ms has passed
+    if (g_flagMilli)
     {
-      lastLED = millis();
-      GPIO_WriteReverse(PORT_TEST, PIN_LED);
-    } // task LED
+      g_flagMilli = FALSE;
     
-    
-    // execute UART command
-    if (UART3_GetFlagStatus(UART3_FLAG_RXNE))
-    {
-      char c = getchar();
+
+      // update checksum value
+      Chk = update_checksum_Fletcher16(Chk, read_1B_far(addrChk));
+
+      // if checksum calculation is finished
+      if (++addrChk > CHK_ADDR_END)
+      {
+        // perform final update (here dummy)
+        Chk = finalize_checksum_Fletcher16(Chk);
+        
+        //////
+        // compare calculated checksum with stored checksum from D-flash 
+        //////
+        
+        // here just print checksum...
+        printf("background: 0x%04x\n", Chk);
+        
+        // re-start checksum calculation
+        addrChk = CHK_ADDR_START;
+        Chk = init_checksum_Fletcher16();
+
+      } // if addrChk > CHK_ADDR_END
       
-      // if 'r' received, trigger SW reset via illegal opcode
-      if (c == 'r')
+
+      // task for LED blink
+      if (millis() - lastLED >= LED_PERIOD)
       {
-        // print message
-        printf("trigger ILLOP reset\n");
+        lastLED = millis();
 
-        // trigger SW reset via illegal opcode
-        SW_RESET_ILLOP();
+        GPIO_WriteReverse(PORT_TEST, PIN_LED);
+        
+      } // task LED
 
-      } // received 'r'
+    } // if g_flagMilli
 
-      // if 'R' received, trigger SW reset via WWDG
-      else if (c == 'R')
-      {
-        // print message
-        printf("trigger WWDG reset\n");
-
-        // trigger SW reset via window watchdog
-        SW_RESET_WWDG();
-
-      } // received 'R'
-
-    } // byte received
- 
   } // main loop
   
 } // main()
