@@ -37,14 +37,14 @@
 // function returns, it returns directly from __sdcc_external_startup() instead.
 #ifdef __SDCC_MODEL_LARGE
   #define ram_test_checkerboard() do { __asm__("jpf _ram_test_checkerboard_impl"); } while(0)
-  #define ram_test_march_c() do { __asm__("jpf _ram_test_march_c_impl"); } while(0)
+  //#define ram_test_march_c() do { __asm__("jpf _ram_test_march_c_impl"); } while(0)
 #else
   #define ram_test_checkerboard() do { __asm__("jp _ram_test_checkerboard_impl"); } while(0)
-  #define ram_test_march_c() do { __asm__("jp _ram_test_march_c_impl"); } while(0)
+  //#define ram_test_march_c() do { __asm__("jp _ram_test_march_c_impl"); } while(0)
 #endif
 
 // WARNING: DO NOT CALL THESE FUNCTIONS DIRECTLY. USE THE MACROS ABOVE.
 extern unsigned char ram_test_checkerboard_impl(void);
-extern unsigned char ram_test_march_c_impl(void);
+//extern unsigned char ram_test_march_c_impl(void);
 
 #endif

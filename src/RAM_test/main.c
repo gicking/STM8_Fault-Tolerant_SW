@@ -52,7 +52,7 @@
 
 uint8_t __sdcc_external_startup(void)
 {
-  // Note: checkerboard test takes ~55ms and march-c test ~130ms (both for 6kB)
+  // Note: checkerboard test takes ~55ms for 6kB @ fCPU = 2MHz
 
   // If IWDG is started via option byte, it is started with typ. 16ms timeout.
   // To avoid reset during RAM test, set a longer IWDG timeout.
@@ -72,7 +72,6 @@ uint8_t __sdcc_external_startup(void)
   // __sdcc_external_startup() itself. Anything below the test is never
   // executed; the 'return' statement is just to avoid a compiler warning.
   ram_test_checkerboard();
-  //ram_test_march_c();
 
   // just to avoid compiler warning
   return 0;

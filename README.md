@@ -62,7 +62,7 @@ This document focuses on features of the STM8S/AF µC. However, most techniques 
     - [Custom Flash Bootloader](#custom-flash-bootloader)
   - [Fill Unused Flash](#fill-unused-flash)
   - [Handle Unused Interrupts](#handle-unused-interrupts)
-  - [Checksum over Static Flash](#checksum-over-static-flash)
+  - [Flash Test](#flash-test)
   - [RAM Test](#ram-test)
   - [Refresh Peripheral Registers](#refresh-peripheral-registers)
   - [Conclusion](#conclusion)
@@ -619,13 +619,13 @@ The reaction inside the unused ISRs depends on the "correct" response to an unex
 ------------------------------------------------
 
 
-## Checksum over Static Flash
+## Flash Test
 
 The static part of P-flash generally contains an optional custom bootloader, the actual application code and possibly some static parameters. The integrity of this memory is crucial for a well-defined system behavior and should therefore be checked. 
 
 A common procedure for checking the integrity of static P-flash is as follows:
 
-- During factory programming the application SW, optional flash bootloader and static parameters are programmed. In addition, a checksum is stored at a fixed address in P-flash or EEPROM
+- During factory programming the application SW, optional flash bootloader and static parameters are programmed. In addition, a checksum over the static flash is stored at a fixed address in P-flash or EEPROM
 
 - The application software calculates the checksum over the relevant flash range and compares the result to the stored checksum
 
@@ -633,9 +633,9 @@ A common procedure for checking the integrity of static P-flash is as follows:
 
 Many different algorithms exist to check the content of a data stream or storage. These range from a simple [sum](https://www.st.com/content/ccc/resource/technical/document/application_note/00/8c/aa/a4/3f/e3/40/cc/CD00004055.pdf/files/CD00004055.pdf/jcr:content/translations/en.CD00004055.pdf) or [XOR checksum](https://stackoverflow.com/a/61917868) to a full-blown [cyclic redundancy check (CRC)](https://commandlinefanatic.com/cgi-bin/showarticle.cgi?article=art008). And as always you have to find a compromise between protection level, code size and CPU runtime.
 
-While sum and XOR checksums are small and fast, they are insenitive to swapped data, e.g. the same bit flipped at 2 different addresses. On the other hand a CRC checksum is much more sensitive to errors, but in general has a bigger impact on CPU runtime and code size. 
+While sum and XOR checksums are small and fast, they are insenitive to swapped data, e.g. they cannot detect if the correct data is at the wrong address. On the other hand a CRC checksum is much more sensitive to errors, but in general has a bigger impact on CPU runtime and code size. 
 
-For a "normal", i.e. safety uncritical situation, I therefore prefer a [Fletcher-16](https://en.wikipedia.org/wiki/Fletcher%27s_checksum#Straightforward) checksum (see example). It is straightforward to implement and is more sensitive to swapped data. Together with the [flash-ECC](#flash-protection) it should cover most flash errors. 
+In my example I therefore use a [Fletcher-16](https://en.wikipedia.org/wiki/Fletcher%27s_checksum#Straightforward) checksum. It is less sensitive than CRC, but can detect swapped data. Together with the [flash-ECC](#flash-protection) it should cover most flash errors. But - as usual - the decision depends on the use-case.
 
 **Notes:**
 
@@ -649,9 +649,11 @@ For a "normal", i.e. safety uncritical situation, I therefore prefer a [Fletcher
 
 - The (not optimized) Fletcher-16 implementation in [lib/checksum](./lib/checksum) with SDCC toolchain and f<sub>CPU</sub>=16MHz: 
   
-  - takes ~330ms to calculate a checksum over 64kB flash
+  - takes ~330ms to calculate a checksum over 64kB flash in one go
   
   - adds ~0.8% CPU load if `update_checksum_Fletcher16()` is called every 1ms. A new checksum is available every ~65.5s for 64kB flash  
+  
+- If [IWDG](#window-watchdog-wwdg) and/or [WWDG](#independent-timeout-watchdog-iwdg) watchdogs are running, you have to either ensure a sufficiently long timeout, or service the WD during the test. 
 
 ----
 
@@ -664,33 +666,31 @@ For a "normal", i.e. safety uncritical situation, I therefore prefer a [Fletcher
 
 ## RAM Test
 
-The random access memory (RAM) is the volatile working memory of a µC. RAM is generally cleared by the flash start-up code after each power-on or reset. The functionality of RAM is crucial for a well-defined system behavior and should therefore be checked. However, RAM content changes continuously (and fast) during run-time, so RAM can only be checked immediately after reset, not during run-time. 
+The random access memory (RAM) is the volatile working memory of a µC. RAM is generally cleared by the flash start-up code after each power-on or reset. The functionality of RAM is crucial for a well-defined system behavior and should therefore be checked. RAM is generally tested by writing a pattern and reading it back. And while RAM can be tested during run-time (see e.g. [AN4435](https://www.st.com/content/ccc/resource/technical/document/application_note/ff/a7/a7/01/7c/9f/43/d4/DM00105610.pdf/files/DM00105610.pdf/jcr:content/translations/en.DM00105610.pdf)), this is required only for safety critical applications and exceeds the scope of this simple how-to. Here we only demonstrate RAM test during start-up. 
 
-There are several, established methods to test RAM functionality, e.g. "checkerboard test" or "march test". The below example demonstrates the checkerboard test, which is often used for embedded RAM. The procedure is as follows:
+There are several established methods to test RAM functionality, e.g. "checkerboard" test or several variants of "march" tests. The below example demonstrates the checkerboard test, which is often used for embedded RAM. The procedure is as follows:
 
-- During flash start-up
-   
   - Fill complete RAM with a checkerboard pattern `0x55`, and read back
 
   - Repeat procedure with inverted value `0xAA`
 
-- In case of a mismatch, an error response can be executed. Often this is a [SW reset](#software-reset), but more sophisticated reactions are also possible. But remember, a µC with broken RAM cannot be trusted!
+  - In case of a mismatch, an error response can be executed. Often this is a [SW reset](#software-reset), but more sophisticated reactions are also possible. But remember, a µC with broken RAM cannot be trusted!
 
 **Notes:**
 
-- More complex test patterns are described in Application Note [AN4435](https://www.st.com/content/ccc/resource/technical/document/application_note/ff/a7/a7/01/7c/9f/43/d4/DM00105610.pdf/files/DM00105610.pdf/jcr:content/translations/en.DM00105610.pdf)
+- As the stack is reserved before jumping to `main()`, RAM is tested during flash start-up. Else a run-time test with intermediate RAM buffering would be required. 
+
+- Complete RAM is overwritten by the test. Therefore only CPU and SFR registers are used for the test. This level of control generally requires to write the RAM test in assmbler (see example).
   
-- As the stack is reserved before jumping to `main()`, the RAM has to be checked during flash start-up
+- Implementation of flash start-up code is heavily dependent on the used toolchain. E.g. [SDCC](https://sdcc.sourceforge.net/) uses a [dedicated routine](http://www.gtoal.com/compilers101/small_c/gbdk/sdcc/doc/sdccman.html/node31.html) `__sdcc_external_startup()` for optional user start-up code, while Cosmic uses specific files for flash startup code.
 
-- Complete RAM is overwritten by the test. Therefore only CPU and SFR registers may be used for the test. This level of control generally requires to write the RAM test in assmbler (see example)
+- The below example is for SDCC >=v4.2.10 and was copied from https://github.com/basilhussain/stm8-ram-test. More test patterns are also available from there.
+
+- Other test patterns and a run-time test library are described in Application Note [AN4435](https://www.st.com/content/ccc/resource/technical/document/application_note/ff/a7/a7/01/7c/9f/43/d4/DM00105610.pdf/files/DM00105610.pdf/jcr:content/translations/en.DM00105610.pdf).
   
-- Implementation of flash start-up code is heavily dependent on the used toolchain. E.g. [SDCC](https://sdcc.sourceforge.net/) uses a [dedicated routine](http://www.gtoal.com/compilers101/small_c/gbdk/sdcc/doc/sdccman.html/node31.html) `__sdcc_external_startup()` for optional user start-up code, while Cosmic uses specific filenames for flash startup code.
+- If [IWDG](#window-watchdog-wwdg) and/or [WWDG](#independent-timeout-watchdog-iwdg) watchdogs are activated via option bytes, check that the timeout is longer than the duration of your RAM test (see example). 
 
-- For SDCC >=v4.2.10 RAM checkerboard and march test implementations are available from https://github.com/basilhussain/stm8-ram-test (used in below example)
-
-- The [IWDG watchdog](#window-watchdog-wwdg) has a default timeout which is shorter than the RAM test duration. So, if IWDG is activated via option bytes, you have to set longer timeouts in `__sdcc_external_startup()` prior to starting the RAM test (see below example)
-
-A fully functional RAM is crucial for any application. The checkerboard test from the example adds only 32B flash and 55ms startup time overheads. So, unless flash size or startup time are super critical, I propose to add a RAM test to every application.
+A fully functional RAM is crucial for any application. The checkerboard test from the example adds only 32B flash and 55ms startup time overheads. So, unless flash size or startup time are super critical, I propose to add a RAM test to any serious application.
 
 ----
 
