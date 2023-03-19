@@ -77,8 +77,6 @@ void main(void)
   // enable interrupts
   enableInterrupts();
 
-  //FLASH->CR1 = (1 << 3);
-
 
   /////////////
   // main loop
@@ -91,8 +89,7 @@ void main(void)
       lastLED = millis();
       GPIO_WriteReverse(PORT_TEST, PIN_LED);
       
-      int i = (int) FLASH->CR1;
-      printf("%d\n", i);
+      printf("%ld\n", millis());
 
     } // task LED
 
