@@ -307,11 +307,13 @@ The independent timeout watchdog (IWDG) of the STM8S/AF is described in the [ref
 
   - LSI frequency can be measured using f<sub>CPU</sub> for tighter timing (see [SPL](https://www.st.com/en/embedded-software/stsw-stm8069.html) IWDG example). In this case re-measure periodically to account for slow LSI frequency drift
 
-  - Once started, the IWDG cannot be stopped by user SW until next reset
+  - Once started, the IWDG cannot be stopped by user SW until next reset. However, timeout period can be changed by software
 
   - Timeout period can be configured by SW between 64µs and 1s (typ.). Configuration registers are "password protected"
 
   - Optional activation by boot-ROM via [option bytes](#option-bytes), see e.g. [STM8S207K8 datasheet](https://www.st.com/resource/en/datasheet/stm8s207k8.pdf), section 8. Default timeout after reset is 16ms
+
+  - For STM8S/AF variants the IWDG watchdog cannot be disabled in HALT mode (see [here](https://github.com/gicking/STM8_headers/pull/10)). In this case, periodically wake up via AWU to service IWDG before timeout (-> higher power consumption)
 
   - If IWDG is activated via option bytes and RAM test is used, special attention is required, see [RAM test](#ram-test) notes
 

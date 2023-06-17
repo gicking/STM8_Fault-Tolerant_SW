@@ -14,4 +14,6 @@ clear
 pandoc README.md --metadata title="Fault-Tolerant Software for STM8 Microcontrollers" -o Fault-Tolerant_SW.epub
 
 # rename PDF (exported from Visual Studio Code)
+#   once: install extension "Markdown PDF" by yzane
+#   each time: export PDF from Markdown
 mv README.pdf Fault-Tolerant_SW.pdf
