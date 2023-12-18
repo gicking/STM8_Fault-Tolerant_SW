@@ -36,6 +36,8 @@ This document focuses on features of the STM8S/AF µC. However, most techniques 
 
 - Many of the below described techniques are described in STM application notes [AN1015](https://www.st.com/content/ccc/resource/technical/document/application_note/1c/6c/02/93/79/c8/4e/32/CD00004037.pdf/files/CD00004037.pdf/jcr:content/translations/en.CD00004037.pdf) and [AN4435](https://www.st.com/content/ccc/resource/technical/document/application_note/ff/a7/a7/01/7c/9f/43/d4/DM00105610.pdf/files/DM00105610.pdf/jcr:content/translations/en.DM00105610.pdf). The latter also describes a certified safety library for self-tests, which is available from the ST homepage. However, it cannot be used here due to license restrictions
 
+- Folder `examples` contains [VSCode/PlatformIO](https://platformio.org/) projects to demonstrate the used techniques. Just follow the installation instructions on the PlatformIO homepage, then open file `examples/examples.code-workspace` with VSCode. Alternatively import the examples to the toolchain of your choice.
+
 ---
 
 
