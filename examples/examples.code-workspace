@@ -1,0 +1,42 @@
+{
+	"folders": [
+		{
+			"path": "common"
+		},
+		{
+			"path": "sw_reset"
+		},
+		{
+			"path": "external_clock"
+		},
+		{
+			"path": "iwdg_watchdog"
+		},
+		{
+			"path": "wwdg_watchdog"
+		},
+		{
+			"path": "unused_ISR"
+		},
+		{
+			"path": "flash_checksum"
+		},
+		{
+			"path": "ram_test"
+		},
+		{
+			"path": "sw_clock"
+		},
+		{
+			"path": "uart_debug"
+		},
+		{
+			"path": "playground"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"checksum_crc16.h": "c"
+		}
+	}
+}

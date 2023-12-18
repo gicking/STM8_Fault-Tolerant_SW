@@ -1,0 +1,140 @@
+[
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/SPL/stm8s_adc2.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_adc2.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_adc2.c",
+        "output": ".pio/build/nucleo_8s207k8/SPL/stm8s_adc2.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/SPL/stm8s_awu.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_awu.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_awu.c",
+        "output": ".pio/build/nucleo_8s207k8/SPL/stm8s_awu.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/SPL/stm8s_beep.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_beep.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_beep.c",
+        "output": ".pio/build/nucleo_8s207k8/SPL/stm8s_beep.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/SPL/stm8s_clk.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_clk.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_clk.c",
+        "output": ".pio/build/nucleo_8s207k8/SPL/stm8s_clk.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/SPL/stm8s_exti.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_exti.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_exti.c",
+        "output": ".pio/build/nucleo_8s207k8/SPL/stm8s_exti.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/SPL/stm8s_flash.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_flash.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_flash.c",
+        "output": ".pio/build/nucleo_8s207k8/SPL/stm8s_flash.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/SPL/stm8s_gpio.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_gpio.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_gpio.c",
+        "output": ".pio/build/nucleo_8s207k8/SPL/stm8s_gpio.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/SPL/stm8s_i2c.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_i2c.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_i2c.c",
+        "output": ".pio/build/nucleo_8s207k8/SPL/stm8s_i2c.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/SPL/stm8s_itc.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_itc.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_itc.c",
+        "output": ".pio/build/nucleo_8s207k8/SPL/stm8s_itc.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/SPL/stm8s_iwdg.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_iwdg.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_iwdg.c",
+        "output": ".pio/build/nucleo_8s207k8/SPL/stm8s_iwdg.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/SPL/stm8s_rst.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_rst.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_rst.c",
+        "output": ".pio/build/nucleo_8s207k8/SPL/stm8s_rst.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/SPL/stm8s_spi.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_spi.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_spi.c",
+        "output": ".pio/build/nucleo_8s207k8/SPL/stm8s_spi.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/SPL/stm8s_tim1.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_tim1.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_tim1.c",
+        "output": ".pio/build/nucleo_8s207k8/SPL/stm8s_tim1.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/SPL/stm8s_tim2.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_tim2.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_tim2.c",
+        "output": ".pio/build/nucleo_8s207k8/SPL/stm8s_tim2.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/SPL/stm8s_tim3.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_tim3.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_tim3.c",
+        "output": ".pio/build/nucleo_8s207k8/SPL/stm8s_tim3.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/SPL/stm8s_tim4.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_tim4.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_tim4.c",
+        "output": ".pio/build/nucleo_8s207k8/SPL/stm8s_tim4.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/SPL/stm8s_uart1.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_uart1.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_uart1.c",
+        "output": ".pio/build/nucleo_8s207k8/SPL/stm8s_uart1.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/SPL/stm8s_uart3.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_uart3.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_uart3.c",
+        "output": ".pio/build/nucleo_8s207k8/SPL/stm8s_uart3.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/SPL/stm8s_wwdg.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_wwdg.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/src/stm8s_wwdg.c",
+        "output": ".pio/build/nucleo_8s207k8/SPL/stm8s_wwdg.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/libba7/sw_clock/sw_clock.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/common/sw_clock -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/common/sw_clock/sw_clock.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/common/sw_clock/sw_clock.c",
+        "output": ".pio/build/nucleo_8s207k8/libba7/sw_clock/sw_clock.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/libd0d/uart_stdio/uart_stdio.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -I/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/common/uart_stdio -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc /home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/common/uart_stdio/uart_stdio.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/common/uart_stdio/uart_stdio.c",
+        "output": ".pio/build/nucleo_8s207k8/libd0d/uart_stdio/uart_stdio.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/src/main.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -Iinclude -Isrc -I/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/common/sw_reset -I/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/common/uart_stdio -I/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/common/sw_clock -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc src/main.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "src/main.c",
+        "output": ".pio/build/nucleo_8s207k8/src/main.rel"
+    },
+    {
+        "command": "/home/georg/.platformio/packages/toolchain-sdcc/bin/sdcc -o .pio/build/nucleo_8s207k8/src/stm8s_it.rel -c -mstm8 --opt-code-size -DF_CPU=16000000L -DPLATFORMIO=60111 -DSTM8S_NUCLEO_207K8 -DSTM8S207 -DUSE_STDPERIPH_DRIVER -DUSE_STDINT -Iinclude -Isrc -I/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/common/sw_reset -I/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/common/uart_stdio -I/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/common/sw_clock -I/home/georg/.platformio/packages/framework-ststm8spl/Libraries/STM8S_StdPeriph_Driver/inc -Isrc src/stm8s_it.c",
+        "directory": "/home/georg/\u00d6ffentlich/GitHub/STM8_Fault-Tolerant_SW_neu/examples/unused_ISR",
+        "file": "src/stm8s_it.c",
+        "output": ".pio/build/nucleo_8s207k8/src/stm8s_it.rel"
+    }
+]

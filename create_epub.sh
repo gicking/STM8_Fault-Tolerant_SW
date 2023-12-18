@@ -1,5 +1,7 @@
 #!/bin/bash  
 
+# requires installation of pandoc
+
 # open terminal on double-click, skip else. See https://www.linuxquestions.org/questions/programming-9/executing-shell-script-in-terminal-directly-with-a-double-click-370091/
 tty -s; if [ $? -ne 0 ]; then /etc/alternatives/x-terminal-emulator -e "$0"; exit; fi
 
@@ -13,7 +15,7 @@ clear
 # convert Markdown to ePub using pandoc
 pandoc README.md --metadata title="Fault-Tolerant Software for STM8 Microcontrollers" -o Fault-Tolerant_SW.epub
 
-# rename PDF (exported from Visual Studio Code)
-#   once: install extension "Markdown PDF" by yzane
+# rename PDF (manually exported from Visual Studio Code)
+#   once: install VSCode extension "Markdown PDF" by yzane
 #   each time: export PDF from Markdown
 mv README.pdf Fault-Tolerant_SW.pdf
