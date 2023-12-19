@@ -13,6 +13,7 @@
 
   Supported Hardware:
     - STM8S Discovery
+    - Sduino Uno (https://github.com/roybaer/sduino_uno)
   
 **********************/
 
@@ -37,8 +38,8 @@
 #if defined(STM8S_DISCOVERY)
   #define PORT_LED        (GPIOD)         // LED port 
   #define PIN_LED         (GPIO_PIN_0)    // LED pin = STM8 PD0
-#elif defined(STM8S_NUCLEO_207K8)
-  #define PORT_LED       (GPIOC)          // LED port 
+#elif defined(STM8S_UNO)
+  #define PORT_LED        (GPIOC)         // LED port 
   #define PIN_LED         (GPIO_PIN_5)    // LED pin = STM8 PC5
 #else
   #error Board not supported

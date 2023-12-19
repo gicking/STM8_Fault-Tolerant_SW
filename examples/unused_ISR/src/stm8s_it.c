@@ -267,7 +267,7 @@ INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
   */
   
   // print message
-  printf("TIM1_UPD ISR: shut-down, then reset\n");
+  printf("TIM1_UPD ISR: reset\n");
   
   // ISR not handled, tigger SW reset
   SW_RESET_ILLOP();

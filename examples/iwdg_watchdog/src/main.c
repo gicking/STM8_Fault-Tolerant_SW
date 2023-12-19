@@ -1,7 +1,7 @@
 /**********************
   
-  Demonstrate use of IWDG timeout watchdog with state machine.
-  Omit use of SPL function for actual watchdog service.
+  Demonstrate use of IWDG timeout watchdog with SW flow-check via CRC16.
+  Omit use of SPL function for actual watchdog service (flat call-tree)
 
   Functionality:
     - initialization:
@@ -13,7 +13,7 @@
       - blocking wait 1s (with dummy IWDG service)
     - main loop
       - blink LED periodically
-      - call some test routines with total runtime 10ms
+      - call some test routines with total runtime ~10ms
       - if UART receives
         - 'i': disable IWDG service -> reset
         - 'I': 2x IWDG service -> no reset

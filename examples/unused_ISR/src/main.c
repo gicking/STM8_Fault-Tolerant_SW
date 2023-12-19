@@ -11,7 +11,7 @@
     - main loop
       - blink LED periodically
       - if UART receives
-        - 'i': trigger TIM1 UPD interrupt -> call ISR
+        - 'i': trigger TIM1_UPD interrupt -> call ISR 
 
   Supported Hardware:
     - Nucleo 8S207K8

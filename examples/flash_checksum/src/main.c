@@ -1,9 +1,10 @@
 /**********************
   
-  Demonstrate flash CRC16 checksum check
+  Demonstrate flash Fletcher-16 checksum check.
+  Note: safer CRC16 is also available in 'common/checksum', but it is ~3x slower
 
   Functionality:
-    - during initialization calculate CRC16 checksum over complete flash
+    - during initialization calculate checksum over complete flash
     - in main loop periodically 
       - blink LED
       - calculate checksum over complete flash in background
@@ -14,7 +15,7 @@
   Note:
     - here only print calculated checksum, no comparison with stored value in EEPROM
     - checksum calculation is not size or speed optimized
-    - the initial checksum calculation takes ~330ms (16MHz, SDCC)
+    - the initial Fletcher-16 checksum calculation takes ~330ms (16MHz, SDCC)
     - when called every 1ms, a new checksum is available every ~65s with an additional CPU load of ~0.8% (16MHz, SDCC)
 
 **********************/
@@ -33,7 +34,7 @@
 #define _MAIN_            // required for global variables
   #include "sw_clock.h"
   #include "uart_stdio.h"
-  #include "checksum_crc16.h"
+  #include "checksum_fletcher16.h"
 #undef _MAIN_
 
 
@@ -107,13 +108,13 @@ void main(void)
 
   // initial checksum calculation
   uint32_t tStart = millis();
-  Chk = crc16_ccitt_range(CHK_ADDR_START, CHK_ADDR_END);
+  Chk = fletcher16_chk_range(CHK_ADDR_START, CHK_ADDR_END);
   uint32_t tEnd = millis();
   printf("initial: %ldms\t0x%04x\n", (long) (tEnd-tStart), Chk);
 
   // re-initialize checksum calculation
   addrChk = CHK_ADDR_START;
-  Chk = crc16_ccitt_initialize();
+  Chk = fletcher16_chk_initialize();
   tStart = millis();
 
 
@@ -129,13 +130,13 @@ void main(void)
     
 
       // update checksum value
-      Chk = crc16_ccitt_update(Chk, read_1B_far(addrChk));
+      Chk = fletcher16_chk_update(Chk, read_1B_far(addrChk));
 
       // if checksum calculation is finished
       if (++addrChk > CHK_ADDR_END)
       {
         // perform final update (here dummy)
-        Chk = crc16_ccitt_finalize(Chk);
+        Chk = fletcher16_chk_finalize(Chk);
         
         //////
         // compare calculated checksum with stored checksum from D-flash 
@@ -146,7 +147,7 @@ void main(void)
         
         // re-start checksum calculation
         addrChk = CHK_ADDR_START;
-        Chk = crc16_ccitt_initialize();
+        Chk = fletcher16_chk_initialize();
 
       } // if addrChk > CHK_ADDR_END
       

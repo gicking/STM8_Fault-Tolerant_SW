@@ -668,7 +668,7 @@ Many different algorithms exist to check the content of a data stream or storage
 
 While sum and XOR checksums are small and fast, they are insenitive to swapped data, e.g. they cannot detect if the correct data is at the wrong address. On the other hand a CRC checksum is much more sensitive to errors, but in general has a bigger impact on CPU runtime and code size. 
 
-In my example I use a [CRC16](https://en.wikipedia.org/wiki/Cyclic_redundancy_check) checksum, which has a 15ppm slip rate for random errors according to [this site](https://quickbirdstudios.com/blog/validate-data-with-crc/). Together with [flash ECC](#Flash_Properties) it should cover most flash errors. But - as usual - the decision depends on the use-case.
+In my example I therefore use a [Fletcher-16](https://en.wikipedia.org/wiki/Fletcher%27s_checksum#Straightforward) checksum. It is less sensitive than CRC, but can detect swapped data. Together with the [flash-ECC](#flash-protection) it should cover most flash errors. But - as usual - the decision depends on the use-case.
 
 **Notes:**
 
@@ -680,11 +680,11 @@ In my example I use a [CRC16](https://en.wikipedia.org/wiki/Cyclic_redundancy_ch
 
 - An STM8 optimized implementations of various CRC checksums can be found [here](https://github.com/basilhussain/stm8-crc)
 
-- The (not optimized) [CRC16 implementation](./examples/common/crc16) with SDCC toolchain and f<sub>CPU</sub>=16MHz: 
+- The (not optimized) Fletcher-16 implementation in [lib/checksum](./lib/checksum) with SDCC toolchain and f<sub>CPU</sub>=16MHz: 
   
-  - xxx takes ~330ms to calculate a checksum over 64kB flash in one go
+  - takes ~330ms to calculate a checksum over 64kB flash in one go
   
-  - xxx adds ~0.8% CPU load if `update_checksum_Fletcher16()` is called every 1ms. A new checksum is available every ~65.5s for 64kB flash  
+  - adds ~0.8% CPU load if `update_checksum_Fletcher16()` is called every 1ms. A new checksum is available every ~65.5s for 64kB flash 
   
 - If [IWDG](#Watchdog_IWDG) and/or [WWDG](#Watchdog_WWDG) watchdogs are running, you have to either ensure a sufficiently long timeout, or service the WD during the test. 
 

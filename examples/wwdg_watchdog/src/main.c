@@ -230,29 +230,29 @@ void main(void)
     test_1();
     
 
-    // call test routine 1 to emulate CPU load. Runtime 5ms
+    // call test routine 2 to emulate CPU load. Runtime 5ms
     // config WWDG [768us] for 7.7ms period, 5.3ms open window
     WWDG_SETCOUNTER(10);
     WWDG_OPENWINDOW(7);
-    if (flagTest2 == 0)             // normal call
+    if (flagTest2 == 0)             // 0: normal call
       test_2();
-    else if (flagTest2 == 1)        // skip -> time too short
+    else if (flagTest2 == 1)        // 1: skip -> time too short
       ;
-    else                            // add delay -> time too long
+    else                            // 2: add delay -> time too long
     {
       test_2();
       delay(5);
     }
 
 
-    // call test routine 1 to emulate CPU load. Runtime 10ms
+    // call test routine 3 to emulate CPU load. Runtime 10ms
     // config WWDG for 13.1ms period, 7.7ms open window 
     WWDG_SETCOUNTER(17);
     WWDG_OPENWINDOW(10);
     test_3();
 
 
-    // call test routine 1 to emulate CPU load. Runtime 20ms
+    // call test routine 4 to emulate CPU load. Runtime 20ms
     // config WWDG for 24.6ms period, 10.0ms open window 
     WWDG_SETCOUNTER(32);
     WWDG_OPENWINDOW(13);
