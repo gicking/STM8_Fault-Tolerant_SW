@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Dec 21 16:06:56 2023
+CRC8, CRC16 and CRC32 using lookup tables
 
-@author: ICK2BUE
+For common polynoms, initals etc. see https://crccalc.com/
+Results have been checked checked vs. https://crccalc.com/
+
+
+@author: gicking @ Github
 """
 
 # global lookup tables
@@ -214,21 +218,37 @@ def calculate_crc16(Data:bytearray=None, Poly:int=0x1021, Init:int=0xFFFF, RefIn
     # init checksum
     crc = Init
     
-    # calculate checksum over data array
-    for byte in Data:
+    # little endianness
+    if little_endian:
         
-        # reverse input bits if specified
-        if RefIn == True:
-            byte = int('{:08b}'.format(byte)[::-1], 2)
+        # calculate checksum over data array
+        for byte in Data:
+        
+            # reverse input bits if specified
+            if RefIn == True:
+                byte = int('{:08b}'.format(byte)[::-1], 2)
 
-        # XOR with next data byte. Account for endianness
-        if little_endian:
+            # XOR with next data byte. Account for endianness
             crc = (crc << 8) ^ __CRC16_LUT[((crc >> 8) ^ byte) & 0xFF]
-        else:
+            
+            # clip to 16-bit
+            crc &= 0xFFFF
+
+    # big endian
+    else:
+
+        # calculate checksum over data array
+        for byte in Data:
+        
+            # reverse input bits if specified
+            if RefIn == True:
+                byte = int('{:08b}'.format(byte)[::-1], 2)
+
+            # XOR with next data byte. Account for endianness
             crc = (crc >> 8) ^ __CRC16_LUT[(crc ^ byte) & 0xFF]
             
-        # clip to 16-bit
-        crc &= 0xFFFF
+            # clip to 16-bit
+            crc &= 0xFFFF
 
     # finalize checksum
     crc = crc ^ XorOut
@@ -282,23 +302,39 @@ def calculate_crc32(Data:bytearray=None, Poly:int=0x04C11DB7, Init:int=0xFFFFFFF
     little_endian = True if int.from_bytes(b'\x01\x00', byteorder='little') == 1 else False
 
     # init checksum
-    crc = Init
+    crc = Init 
     
-    # calculate checksum over data array
-    for byte in Data:
+    # little endianness
+    if little_endian:
         
-        # reverse input bits if specified
-        if RefIn == True:
-            byte = int('{:08b}'.format(byte)[::-1], 2)
+        # calculate checksum over data array
+        for byte in Data:
+        
+            # reverse input bits if specified
+            if RefIn == True:
+                byte = int('{:08b}'.format(byte)[::-1], 2)
 
-        # XOR with next data byte. Account for endianness
-        if little_endian:
+            # XOR with next data byte. Account for endianness
             crc = (crc << 8) ^ __CRC32_LUT[((crc >> 24) ^ byte) & 0xFF]
-        else:
-            crc = (crc >> 8) ^ __CRC32_LUT[(crc ^ byte) & 0xFF]
             
-        # clip to 32-bit
-        crc &= 0xFFFFFFFF
+            # clip to 32-bit
+            crc &= 0xFFFFFFFF
+            
+    # big endian
+    else:
+
+        # calculate checksum over data array
+        for byte in Data:
+                
+            # reverse input bits if specified
+            if RefIn == True:
+                byte = int('{:08b}'.format(byte)[::-1], 2)
+
+            # XOR with next data byte. Account for endianness
+            crc = (crc >> 8) ^ __CRC32_LUT[(crc ^ byte) & 0xFF]
+                    
+            # clip to 32-bit
+            crc &= 0xFFFFFFFF
 
     # finalize checksum
     crc = crc ^ XorOut

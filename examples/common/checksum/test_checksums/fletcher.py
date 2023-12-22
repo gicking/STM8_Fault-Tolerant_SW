@@ -4,7 +4,7 @@ Fletcher-16, Fletcher-32 and Fletcher-64 checksum calculation.
 
 Results have been checked checked vs. https://en.wikipedia.org/wiki/Fletcher%27s_checksum
 
-@author: ICK2BUE
+@author: gicking @ Github
 """
 
 

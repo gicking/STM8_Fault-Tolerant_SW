@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-CRC8, CRC16 and CRC32 calculation w/o table
+CRC8, CRC16 and CRC32 calculation w/o lookup tables
 
 For common polynoms, initals etc. see https://crccalc.com/
 Results have been checked checked vs. https://crccalc.com/
 
-Note: is very slow, for demonstration only! For faster version see crc_lut.py
+Note: this method is very slow! For faster version see crc_lut.py
 
-@author: ICK2BUE
+@author: gicking @ Github
 """
 
 
