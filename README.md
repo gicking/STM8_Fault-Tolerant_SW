@@ -668,7 +668,7 @@ Many different algorithms exist to check the content of a data stream or storage
 
 While sum and XOR checksums are small and fast, they are insenitive to swapped data, e.g. they cannot detect if the correct data is at the wrong address. On the other hand a CRC checksum is much more sensitive to errors, but in general has a bigger impact on CPU runtime and code size. 
 
-In my example I therefore use a [Fletcher-16](https://en.wikipedia.org/wiki/Fletcher%27s_checksum#Straightforward) checksum. It is less sensitive than CRC, but can detect swapped data. Together with the [flash-ECC](#flash-protection) it should cover most flash errors. But - as usual - the decision depends on the use-case.
+In my example I use a [Fletcher-16](https://en.wikipedia.org/wiki/Fletcher%27s_checksum#Straightforward) checksum. In general it is less sensitive than CRC16, but is almost [as sensitive to random errors](./examples/common/checksum/test_checksums/measure_collision.py) - and detects swapped data. Together with the [flash-ECC](#flash-protection) a Fletcher-16 checksum over flash should cover most flash errors. But - as usual - the decision depends on the use-case.
 
 **Notes:**
 
